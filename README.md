@@ -2,6 +2,8 @@
 A simple yet powerful tool to calculate your Semester GPA (SGPA) and Cumulative GPA (CGPA) for Hong Kong Baptist University (HKBU) or other 4.0-scale grading systems.
 
 <img src='https://github.com/profGiveMeHighGradePLZ/hkbuGpaCalculator/blob/main/img/gpa.png'>
+<hr>
+<img src='https://github.com/profGiveMeHighGradePLZ/hkbuGpaCalculator/blob/main/img/1.png'>
 
 # ✨ Features #
 <ul><li>
