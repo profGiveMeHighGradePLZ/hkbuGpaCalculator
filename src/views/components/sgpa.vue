@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 
 interface Course {
   credits: number
@@ -52,6 +52,7 @@ const semesterResults = computed(() => {
     0
   )
   const sgpa = totalGradePoints / totalCredits
+  localStorage.setItem('courseRecord',JSON.stringify(form.courses))  
   
   return {
     totalCredits,
@@ -66,12 +67,15 @@ const addCourse = () => {
 const removeCourse = (index: number) => {
   if (form.courses.length > 1) {
     form.courses.splice(index, 1)
+    localStorage.setItem('courseRecord',JSON.stringify(form.courses))  
+
   }
 }
 
 const resetForm = () => {
   form.courses = [...INITIAL_COURSES]
   showResult.value = false
+  localStorage.clear()
 }
 
 const calculateGPA = () => {
@@ -81,6 +85,10 @@ const calculateGPA = () => {
   }
   showResult.value = true
 }
+
+onMounted(()=>{
+  form.courses = JSON.parse(localStorage.getItem('courseRecord'))
+})
 </script>
 
 <template>

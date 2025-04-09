@@ -4,7 +4,10 @@ import MyHeader from './components/header.vue'
 
 <template>
     <el-containor>
-        <MyHeader></MyHeader>
+        <el-header>
+            <MyHeader>
+            </MyHeader>
+        </el-header>
         <el-main>
             <router-view></router-view>
         </el-main>

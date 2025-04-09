@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 
 interface Course {
   credits: number
@@ -42,6 +42,15 @@ const cgpa = ref(0)
 const currentCredits = ref(0)
 const showResult = ref(false)
 
+watch(cgpa,(newValue)=>{
+  localStorage.setItem('cgpa',JSON.stringify(newValue))
+  
+})
+watch(currentCredits,(newValue)=>{
+  localStorage.setItem('currentCredits',JSON.stringify(newValue))
+
+})
+
 // 计算属性
 const validCourses = computed(() => form.courses.filter(course => course.grade !== null))
 
@@ -54,6 +63,7 @@ const semesterResults = computed(() => {
     0
   )
   const sgpa = totalGradePoints / totalCredits
+  localStorage.setItem('courseRecord',JSON.stringify(form.courses))  
   
   return {
     totalCredits,
@@ -65,8 +75,8 @@ const cumulativeResults = computed(() => {
   if (!semesterResults.value || currentCredits.value <= 0) return null
   
   const totalCredits = semesterResults.value.totalCredits + currentCredits.value
-  const totalGradePoints = (currentCredits.value * cgpa.value) + 
-                          (semesterResults.value.totalCredits * parseFloat(semesterResults.value.sgpa))
+  const totalGradePoints = (currentCredits.value * cgpa.value) + (semesterResults.value.totalCredits * parseFloat(semesterResults.value.sgpa))
+
   
   return {
     totalCredits,
@@ -82,12 +92,16 @@ const addCourse = () => {
 const removeCourse = (index: number) => {
   if (form.courses.length > 1) {
     form.courses.splice(index, 1)
+    localStorage.setItem('courseRecord',JSON.stringify(form.courses))  
+
   }
 }
 
 const resetForm = () => {
   form.courses = [...INITIAL_COURSES]
   showResult.value = false
+  localStorage.clear()
+
 }
 
 const calculateGPA = () => {
@@ -105,6 +119,12 @@ const validateGPA = (value: number) => {
   }
   return true
 }
+
+onMounted(()=>{
+  form.courses = JSON.parse(localStorage.getItem('courseRecord'))
+  cgpa.value=JSON.parse(localStorage.getItem('cgpa'))
+  currentCredits.value=JSON.parse(localStorage.getItem('currentCredits'))
+})
 </script>
 
 <template>
